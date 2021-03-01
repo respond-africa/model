@@ -1,0 +1,4 @@
+[run]
+include = respond_model/*
+omit = respond_model/tests/*,respond_model/migrations/*
+branch = 1
