@@ -14,15 +14,15 @@ class ClinicalReviewBaselineModelStub(Protocol):
     dm_dx: models.CharField
     dm_test_ago: edc_models.DurationYMDField
     dm_test_date: models.DateField
-    dm_test_estimated_datetime: models.DateTimeField
+    dm_test_estimated_date: models.DateTimeField
     hiv_dx: models.CharField
     hiv_test_ago: edc_models.DurationYMDField
     hiv_test_date: models.DateField
-    hiv_test_estimated_datetime: models.DateTimeField
+    hiv_test_estimated_date: models.DateTimeField
     htn_dx: models.CharField
     htn_test_ago: edc_models.DurationYMDField
     htn_test_date: models.DateField
-    htn_test_estimated_datetime: models.DateTimeField
+    htn_test_estimated_date: models.DateTimeField
 
     site: models.Manager
     history: models.Manager
@@ -35,13 +35,13 @@ class ClinicalReviewModelStub(Protocol):
     report_datetime: Union[datetime, models.DateTimeField]
     dm_dx: models.CharField
     dm_test_date: models.DateField
-    dm_test_estimated_datetime: models.DateTimeField
+    dm_test_estimated_date: models.DateTimeField
     hiv_dx: models.CharField
     hiv_test_date: models.DateField
-    hiv_test_estimated_datetime: models.DateTimeField
+    hiv_test_estimated_date: models.DateTimeField
     htn_dx: models.CharField
     htn_test_date: models.DateField
-    htn_test_estimated_datetime: models.DateTimeField
+    htn_test_estimated_date: models.DateTimeField
 
     site: models.Manager
     history: models.Manager

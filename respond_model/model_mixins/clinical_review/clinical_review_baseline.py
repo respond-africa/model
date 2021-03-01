@@ -16,7 +16,7 @@ class ClinicalReviewBaslineModelMixin(models.Model):
         for prefix in self.condition_abbrev:
             setattr(
                 self,
-                f"{prefix}_test_estimated_datetime",
+                f"{prefix}_test_estimated_date",
                 estimated_date_from_ago(self, f"{prefix}_test_ago"),
             )
         super().save(*args, **kwargs)
@@ -40,7 +40,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
         help_text="If positive, most recent HIV(+) test",
     )
 
-    hiv_test_estimated_datetime = models.DateTimeField(
+    hiv_test_estimated_date = models.DateField(
         null=True,
         blank=True,
         editable=False,
@@ -65,7 +65,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.hiv_test_estimated_datetime = estimated_date_from_ago(self, "hiv_test_ago")
+        self.hiv_test_estimated_date = estimated_date_from_ago(self, "hiv_test_ago")
         super().save(*args, **kwargs)  # type: ignore
 
     class Meta:
@@ -86,7 +86,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
         blank=True,
     )
 
-    htn_test_estimated_datetime = models.DateTimeField(
+    htn_test_estimated_date = models.DateField(
         null=True,
         blank=True,
         help_text="calculated by the EDC using `htn_test_ago`",
@@ -108,7 +108,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.htn_test_estimated_datetime = estimated_date_from_ago(self, "htn_test_ago")
+        self.htn_test_estimated_date = estimated_date_from_ago(self, "htn_test_ago")
         super().save(*args, **kwargs)
 
     class Meta:
@@ -129,7 +129,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
         blank=True,
     )
 
-    dm_test_estimated_datetime = models.DateTimeField(
+    dm_test_estimated_date = models.DateField(
         null=True,
         blank=True,
         help_text="calculated by the EDC using `dm_test_ago`",
@@ -151,7 +151,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.dm_test_estimated_datetime = estimated_date_from_ago(self, "dm_test_ago")
+        self.dm_test_estimated_date = estimated_date_from_ago(self, "dm_test_ago")
         super().save(*args, **kwargs)  # type: ignore
 
     class Meta:
@@ -172,7 +172,7 @@ class ClinicalReviewBaselineCholModelMixin(models.Model):
         blank=True,
     )
 
-    chol_test_estimated_datetime = models.DateTimeField(
+    chol_test_estimated_date = models.DateField(
         null=True,
         blank=True,
         help_text="calculated by the EDC using `chol_test_ago`",
@@ -194,7 +194,7 @@ class ClinicalReviewBaselineCholModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.chol_test_estimated_datetime = estimated_date_from_ago(self, "chol_test_ago")
+        self.chol_test_estimated_date = estimated_date_from_ago(self, "chol_test_ago")
         super().save(*args, **kwargs)
 
     class Meta:
