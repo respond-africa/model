@@ -4,4 +4,5 @@ from .clinical_review_baseline import (
     ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
+    ClinicalReviewBaselineModelMixin,
 )

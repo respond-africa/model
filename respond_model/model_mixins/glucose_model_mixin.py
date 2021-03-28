@@ -1,10 +1,9 @@
 from django.db import models
-from edc_constants.choices import YES_NO
+from edc_clinic.choices import GLUCOSE_UNITS
+from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_lab.choices import RESULT_QUANTIFIER_NA
+from edc_lab.choices import GLUCOSE_UNITS_NA, RESULT_QUANTIFIER_NA
 from edc_model.models import date_not_future
-
-from ..choices import GLUCOSE_UNITS_NA
 
 
 class GlucoseModelMixin(models.Model):
@@ -15,11 +14,10 @@ class GlucoseModelMixin(models.Model):
     )
 
     glucose_fasted = models.CharField(
-        verbose_name="Had the participant fasted?",
+        verbose_name="Has the participant fasted?",
         max_length=15,
-        choices=YES_NO,
-        null=True,
-        blank=False,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     glucose = models.DecimalField(

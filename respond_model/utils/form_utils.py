@@ -13,7 +13,9 @@ from .is_baseline import is_baseline
 from .model_utils import (
     get_clinical_review_baseline_model_cls,
     get_clinical_review_model_cls,
+    get_initial_review_model_cls,
     get_medication_model_cls,
+    get_review_model_cls,
 )
 
 
@@ -101,6 +103,20 @@ def requires_clinical_review_at_baseline(subject_visit: SubjectVisitModelStub):
             "Please complete the "
             f"{get_clinical_review_baseline_model_cls()._meta.verbose_name} first."
         )
+
+
+def raise_if_initial_review_does_not_exist(subject_visit, prefix):
+    model_exists_or_raise(
+        subject_visit=subject_visit,
+        model_cls=get_initial_review_model_cls(prefix),
+    )
+
+
+def raise_if_review_does_not_exist(subject_visit, prefix):
+    model_exists_or_raise(
+        subject_visit=subject_visit,
+        model_cls=get_review_model_cls(prefix),
+    )
 
 
 def medications_exists_or_raise(subject_visit: SubjectVisitModelStub) -> bool:

@@ -21,11 +21,11 @@ def get_medication_model_cls() -> Type[models.Model]:
 
 
 def get_initial_review_model_cls(prefix) -> Type[models.Model]:
-    return django_apps.get_model(f"{settings.SUBJECT_APP_LABEL}.{prefix}initialreview")
+    return django_apps.get_model(f"{settings.SUBJECT_APP_LABEL}.{prefix.lower()}initialreview")
 
 
 def get_review_model_cls(prefix) -> Type[models.Model]:
-    return django_apps.get_model(f"{settings.SUBJECT_APP_LABEL}.{prefix}review")
+    return django_apps.get_model(f"{settings.SUBJECT_APP_LABEL}.{prefix.lower()}review")
 
 
 def art_initiation_date(subject_identifier: str, report_datetime: datetime) -> date:

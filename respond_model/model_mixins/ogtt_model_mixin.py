@@ -1,9 +1,7 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_lab.choices import RESULT_QUANTIFIER
+from edc_lab.choices import GLUCOSE_UNITS, RESULT_QUANTIFIER
 from edc_lab.constants import EQ
-
-from ..choices import GLUCOSE_UNITS
 
 
 class OgttModelMixin(models.Model):

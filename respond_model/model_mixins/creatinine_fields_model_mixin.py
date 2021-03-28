@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-
-from ..choices import SERUM_CREATININE_UNITS
+from edc_lab.choices import SERUM_CREATININE_UNITS
 
 
 class CreatinineModelFieldsMixin(models.Model):

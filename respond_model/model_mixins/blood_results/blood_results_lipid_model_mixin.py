@@ -123,6 +123,36 @@ class BloodResultsLipidModelMixin(models.Model):
         blank=True,
     )
 
+    # chol
+    chol = models.DecimalField(
+        validators=[MinValueValidator(0), MaxValueValidator(999)],
+        verbose_name="Cholesterol",
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
+    chol_units = models.CharField(
+        verbose_name="units",
+        max_length=15,
+        choices=((MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER),),
+        null=True,
+        blank=True,
+    )
+
+    chol_abnormal = models.CharField(
+        verbose_name="abnormal", choices=YES_NO, max_length=25, null=True, blank=True
+    )
+
+    chol_reportable = models.CharField(
+        verbose_name="reportable",
+        choices=REPORTABLE,
+        max_length=25,
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         abstract = True
         verbose_name = "Blood Result: Lipids"

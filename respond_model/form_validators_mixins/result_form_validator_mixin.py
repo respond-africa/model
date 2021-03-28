@@ -32,8 +32,7 @@ class ResultFormValidatorMixin(FormValidator):
             dx_date = None
         if not dx_date:
             raise forms.ValidationError(
-                "This form is not relevant. "
-                f"Subject has not been diagnosed with {dx_msg_label}."
+                f"A {dx_msg_label} diagnosis has not been reported for this subject."
             )
         else:
             if dx_date > self.cleaned_data.get(drawn_date_fld):

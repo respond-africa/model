@@ -4,6 +4,7 @@ from .clinical_review import (
     ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
+    ClinicalReviewBaselineModelMixin,
     ClinicalReviewModelMixin,
 )
 from .complications_model_mixin import (
@@ -17,6 +18,8 @@ from .fasting_glucose_model_mixin import FastingGlucoseModelMixin
 from .fasting_model_mixin import FastingModelMixin
 from .glucose_model_mixin import GlucoseModelMixin
 from .initial_review_model_mixin import (
+    HivArvInitiationModelMixin,
+    HivArvMonitoringModelMixin,
     InitialReviewModelError,
     InitialReviewModelMixin,
     NcdInitialReviewModelMixin,

@@ -31,6 +31,7 @@ class ClinicalReviewBaselineModelStub(Protocol):
 
 
 class ClinicalReviewModelStub(Protocol):
+    diagnoses_labels: dict
     subject_visit: SubjectVisitModelStub
     report_datetime: Union[datetime, models.DateTimeField]
     dm_dx: models.CharField

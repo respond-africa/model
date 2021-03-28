@@ -31,6 +31,10 @@ class DiagnosesError(Exception):
 
 
 class Diagnoses:
+    """
+    Tightly coupled to models
+    """
+
     def __init__(
         self,
         subject_identifier: str = None,
@@ -39,7 +43,11 @@ class Diagnoses:
         lte: Optional[bool] = None,
         limit_to_single_condition_prefix=None,
     ) -> None:
-        self.condition_prefix = limit_to_single_condition_prefix
+        self.condition_prefix = (
+            limit_to_single_condition_prefix.lower()
+            if limit_to_single_condition_prefix
+            else None
+        )
         if subject_visit:
             if subject_identifier or report_datetime:
                 raise DiagnosesError(
@@ -60,7 +68,7 @@ class Diagnoses:
     def diagnosis_labels(self):
         if self.condition_prefix:
             return {
-                k: v
+                k.lower(): v
                 for k, v in settings.RESPOND_DIAGNOSIS_LABELS.items()
                 if k == self.condition_prefix
             }
@@ -84,6 +92,7 @@ class Diagnoses:
         """Returns a dx date from the initial review for the condition.
 
         Raises if initial review does not exist."""
+        prefix = prefix.lower()
         if self.initial_reviews.get(prefix):
             return self.initial_reviews.get(prefix).get_best_dx_date()
         return None
@@ -96,8 +105,8 @@ class Diagnoses:
         name is `dm`, `hiv` or `htn`.
         """
         diagnoses = [
-            getattr(self.clinical_review_baseline, f"{prefix}_dx") == YES,
-            *[(getattr(obj, f"{prefix}_dx") == YES) for obj in self.clinical_reviews],
+            getattr(self.clinical_review_baseline, f"{prefix.lower()}_dx") == YES,
+            *[(getattr(obj, f"{prefix.lower()}_dx") == YES) for obj in self.clinical_reviews],
         ]
         if any(diagnoses):
             return YES
@@ -120,12 +129,12 @@ class Diagnoses:
         self, prefix: str = None, lte: bool = None
     ) -> Dict[str, datetime]:
         opts = {}
-        prefix = prefix or ""
+        prefix = prefix.lower() or ""
         if self.report_datetime:
             if lte or self.lte:
-                opts.update({f"{prefix}report_datetime__lte": self.report_datetime})
+                opts.update({f"{prefix.lower()}report_datetime__lte": self.report_datetime})
             else:
-                opts.update({f"{prefix}report_datetime__lt": self.report_datetime})
+                opts.update({f"{prefix.lower()}report_datetime__lt": self.report_datetime})
         return opts
 
     @property
@@ -135,28 +144,28 @@ class Diagnoses:
             **self.report_datetime_opts("subject_visit__"),
         )
 
-    @property
-    def previous_subject_visit(self) -> Optional[SubjectVisitModelStub]:
-        if self.report_datetime:
-            return (
-                self.subject_visit_model_cls.objects.filter(
-                    subject_identifier=self.subject_identifier,
-                    **self.report_datetime_opts(),
-                )
-                .order_by("report_datetime")
-                .first()
-            )
-        return None
+    # @property
+    # def previous_subject_visit(self) -> Optional[SubjectVisitModelStub]:
+    #     if self.report_datetime:
+    #         return (
+    #             self.subject_visit_model_cls.objects.filter(
+    #                 subject_identifier=self.subject_identifier,
+    #                 **self.report_datetime_opts(),
+    #             )
+    #             .order_by("report_datetime")
+    #             .first()
+    #         )
+    #     return None
 
-    @property
-    def baseline_subject_visit(self):
-        return (
-            self.subject_visit_model_cls.objects.filter(
-                subject_identifier=self.subject_identifier,
-            )
-            .order_by("report_datetime")
-            .first()
-        )
+    # @property
+    # def baseline_subject_visit(self):
+    #     return (
+    #         self.subject_visit_model_cls.objects.filter(
+    #             subject_identifier=self.subject_identifier,
+    #         )
+    #         .order_by("report_datetime")
+    #         .first()
+    #     )
 
     def get_initial_reviews(self) -> Dict[str, InitialReviewModelStub]:
         return self.initial_reviews
@@ -176,7 +185,7 @@ class Diagnoses:
             options.append(
                 (
                     prefix,
-                    getattr(self, f"{prefix}_dx"),
+                    getattr(self, f"{prefix.lower()}_dx"),
                     self.get_initial_review_model_cls(prefix),
                     f"{label.title()} diagnosis",
                 )
@@ -251,7 +260,7 @@ class Diagnoses:
             clinical_review_baseline = self.clinical_review_baseline_model_cls.objects.get(
                 subject_visit__subject_identifier=self.subject_identifier,
                 **self.report_datetime_opts("subject_visit__", lte=True),
-                **{f"{prefix}_dx": YES},
+                **{f"{prefix.lower()}_dx": YES},
             )
         except ObjectDoesNotExist:
             subject_visit = None
@@ -262,7 +271,7 @@ class Diagnoses:
                 clinical_review = self.clinical_review_model_cls.objects.get(
                     subject_visit__subject_identifier=self.subject_identifier,
                     **self.report_datetime_opts("subject_visit__", lte=True),
-                    **{f"{prefix}_dx": YES},
+                    **{f"{prefix.lower()}_dx": YES},
                 )
             except ObjectDoesNotExist:
                 subject_visit = None

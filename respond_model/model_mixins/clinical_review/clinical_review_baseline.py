@@ -4,15 +4,28 @@ from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 from edc_model.models import date_not_future, estimated_date_from_ago
+from edc_visit_schedule.constants import DAY1
 
 from ...constants import CONDITION_ABBREVIATIONS
+from .clinical_review import ClinicalReviewModelMixin
 
 
-class ClinicalReviewBaslineModelMixin(models.Model):
+class ClinicalReviewBaselineError(Exception):
+    pass
+
+
+class ClinicalReviewBaselineModelMixin(ClinicalReviewModelMixin):
 
     condition_abbrev = CONDITION_ABBREVIATIONS
 
     def save(self, *args, **kwargs):
+        if (
+            self.subject_visit.visit_code != DAY1
+            and self.subject_visit.visit_code_sequence != 0
+        ):
+            raise ClinicalReviewBaselineError(
+                f"This model is only valid at baseline. Got `{self.subject_visit}`."
+            )
         for prefix in self.condition_abbrev:
             setattr(
                 self,
@@ -23,6 +36,8 @@ class ClinicalReviewBaslineModelMixin(models.Model):
 
     class Meta:
         abstract = True
+        verbose_name = "Clinical Review: Baseline"
+        verbose_name_plural = "Clinical Review: Baseline"
 
 
 class ClinicalReviewBaselineHivModelMixin(models.Model):
