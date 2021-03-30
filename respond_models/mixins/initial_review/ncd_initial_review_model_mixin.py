@@ -10,7 +10,7 @@ class NcdInitialReviewModelMixin(models.Model):
 
     med_start_ago = edc_models.DurationYMDField(
         verbose_name=(
-            f"If the patient is taking medicines for ncd_condition_label, "
+            "If the patient is taking medicines for ncd_condition_label, "
             "how long have they been taking these?"
         ),
         null=True,

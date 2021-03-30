@@ -3,6 +3,7 @@ from datetime import datetime
 from django.apps import apps as django_apps
 from edc_form_validators import FormValidator
 from edc_screening.stubs import SubjectScreeningModelStub
+from edc_utils import age
 
 
 class CrfFormValidatorMixin(FormValidator):
