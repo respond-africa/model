@@ -9,10 +9,10 @@ py_version = "35"
 [tool.coverage.run]
 parallel = true
 branch = true
-source = ["respond_model"]
+source = ["respond_africa"]
 
 [tool.coverage.paths]
-source = ["respond_model", ".tox/*/site-packages"]
+source = ["respond_africa", ".tox/*/site-packages"]
 
 [tool.coverage.report]
 show_missing = true
