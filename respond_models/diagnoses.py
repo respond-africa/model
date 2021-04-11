@@ -7,6 +7,7 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from edc_constants.constants import YES
 from edc_visit_tracking.stubs import SubjectVisitModelStub
 
+from .constants import RESPOND_DIAGNOSIS_LABELS
 from .stubs import (
     ClinicalReviewBaselineModelStub,
     ClinicalReviewModelStub,
@@ -69,10 +70,10 @@ class Diagnoses:
         if self.condition_prefix:
             return {
                 k.lower(): v
-                for k, v in settings.RESPOND_DIAGNOSIS_LABELS.items()
+                for k, v in RESPOND_DIAGNOSIS_LABELS.items()
                 if k == self.condition_prefix
             }
-        return settings.RESPOND_DIAGNOSIS_LABELS
+        return RESPOND_DIAGNOSIS_LABELS
 
     def get_dx_by_model(self, instance: InitialReviewModelStub) -> str:
         dx = None
@@ -83,7 +84,7 @@ class Diagnoses:
         if not dx:
             models_classes = [
                 self.get_initial_review_model_cls(prefix)
-                for prefix in settings.RESPOND_DIAGNOSIS_LABELS
+                for prefix in RESPOND_DIAGNOSIS_LABELS
             ]
             raise DiagnosesError(f"Invalid. Expected an instance of one of {models_classes}")
         return dx
