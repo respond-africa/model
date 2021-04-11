@@ -70,7 +70,12 @@ def main():
     tags = [t.split("=")[1] for t in sys.argv if t.startswith("--tag")]
     failfast = any([True for t in sys.argv if t.startswith("--failfast")])
     failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests(
-        ["respond_models.tests", "respond_forms.tests"]
+        [
+            "respond_models.tests",
+            "respond_forms.tests",
+            "respond_admin.tests",
+            "respond_labs.tests",
+        ]
     )
     sys.exit(failures)
 

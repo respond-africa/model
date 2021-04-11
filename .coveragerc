@@ -1,4 +1,4 @@
 [run]
-include = respond_africa/*
+include = respond_admin/*,respond_forms/*,respond_labs/*,respond_models/*
 omit = respond_africa/tests/*,respond_africa/migrations/*
 branch = 1
