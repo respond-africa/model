@@ -1,3 +1,4 @@
+from django.conf import settings
 from edc_constants.constants import CHOL, DM, HIV, HTN
 
 DIABETES_CLINIC = "diabetes_clinic"
@@ -18,3 +19,4 @@ BLOOD_RESULTS_HBA1C_ACTION = "abnormal-blood-results-hba1c"
 BLOOD_RESULTS_LIPID_ACTION = "abnormal-blood-results-lipid"
 BLOOD_RESULTS_LFT_ACTION = "abnormal-blood-results-lft"
 BLOOD_RESULTS_RFT_ACTION = "abnormal-blood-results-rft"
+RESPOND_DIAGNOSIS_LABELS = getattr(settings, "RESPOND_DIAGNOSIS_LABELS", None)

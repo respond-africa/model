@@ -1,16 +1,18 @@
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
+from ...constants import RESPOND_DIAGNOSIS_LABELS
 from ...stubs import ClinicalReviewModelStub
 
 
 class ClinicalReviewModelMixin(models.Model):
 
-    diagnoses_labels = settings.RESPOND_DIAGNOSIS_LABELS
+    diagnoses_labels = RESPOND_DIAGNOSIS_LABELS
 
     complications = models.CharField(
         verbose_name="Since last seen, has the patient had any complications",
@@ -26,6 +28,8 @@ class ClinicalReviewModelMixin(models.Model):
 
     @property
     def diagnoses(self: ClinicalReviewModelStub) -> dict:
+        if not self.diagnoses_labels:
+            raise ImproperlyConfigured("Settings attribute RESPOND_DIAGNOSIS_LABELS not set.")
         return {k: getattr(self, f"{k}_dx") for k in self.diagnoses_labels}
 
     class Meta:

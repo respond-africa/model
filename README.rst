@@ -1,4 +1,4 @@
-|pypi| |travis| |codecov| |downloads|
+|pypi| |actions| |codecov| |downloads|
 
 
 RESPOND Africa
@@ -9,8 +9,8 @@ The NIHR Research Partnership for the Control of Chronic Diseases in Africa, (RE
 .. |pypi| image:: https://img.shields.io/pypi/v/respond-africa.svg
     :target: https://pypi.python.org/pypi/respond-africa
 
-.. |travis| image:: https://travis-ci.com/respond-africa/respond-africa.svg?branch=develop
-    :target: https://travis-ci.com/respond-africa/respond-africa
+.. |actions| image:: https://github.com/respond-africa/respond-africa/workflows/build/badge.svg?branch=develop
+  :target: https://github.com/respond-africa/respond-africa/actions?query=workflow:build
 
 .. |codecov| image:: https://codecov.io/gh/respond-africa/respond-africa/branch/develop/graph/badge.svg
   :target: https://codecov.io/gh/respond-africa/respond-africa
