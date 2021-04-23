@@ -29,6 +29,4 @@ class GlucoseFormValidator(
                 raise_if_initial_review_does_not_exist(
                     self.cleaned_data.get("subject_visit"), DM
                 )
-            if "glucose_performed" not in self.cleaned_data:
-                raise ImproperlyConfigured("Missing field. Expected 'glucose_performed'")
             self.validate_glucose_test()
