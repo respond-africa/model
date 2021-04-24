@@ -193,6 +193,7 @@ class Diagnoses:
             )
         for name, diagnosis, initial_review_model_cls, description in options:
             if diagnosis:
+                extra_msg = description.title()
                 try:
                     obj = initial_review_model_cls.objects.get(
                         subject_visit__subject_identifier=self.subject_identifier,
@@ -200,13 +201,15 @@ class Diagnoses:
                     )
                 except ObjectDoesNotExist:
                     subject_visit = self.initial_diagnosis_visit(name)
-                    visit_label = (
-                        f"{subject_visit.visit_code}." f"{subject_visit.visit_code_sequence}"
-                    )
+                    if subject_visit:
+                        visit_label = (
+                            f"{subject_visit.visit_code}."
+                            f"{subject_visit.visit_code_sequence}"
+                        )
+                        extra_msg = f"{description} was reported on visit {visit_label}. "
                     raise InitialReviewRequired(
-                        f"{description} was reported on visit {visit_label}. "
-                        f"Complete the `{initial_review_model_cls._meta.verbose_name}` "
-                        "CRF first."
+                        f"{extra_msg}. Complete the "
+                        f"`{initial_review_model_cls._meta.verbose_name}` CRF first."
                     )
                 except MultipleObjectsReturned:
                     qs = initial_review_model_cls.objects.filter(
