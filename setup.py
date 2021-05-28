@@ -25,7 +25,7 @@ setup(
     long_description=README,
     zip_safe=False,
     keywords="django model mixins",
-    install_requires=[],
+    install_requires=["edc>=0.3.15"],
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",
