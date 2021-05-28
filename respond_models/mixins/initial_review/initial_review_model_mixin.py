@@ -2,11 +2,12 @@ from datetime import date
 
 from django.db import models
 from edc_constants.choices import YES_NO
-from edc_constants.constants import NO, YES
+from edc_constants.constants import YES
 from edc_model import models as edc_models
 
 from ...diagnoses import Diagnoses
 from ...stubs import InitialReviewModelStub
+from ...utils import calculate_dx_date_if_estimated
 
 
 class InitialReviewModelError(Exception):
@@ -55,14 +56,11 @@ class InitialReviewModelMixin(models.Model):
                 "No diagnosis has been recorded. See clinical review. "
                 "Perhaps catch this in the form."
             )
-
-        if self.dx_ago:
-            self.dx_estimated_date = edc_models.duration_to_date(
-                self.dx_ago, self.report_datetime
-            )
-            self.dx_date_estimated = YES
-        else:
-            self.dx_date_estimated = NO
+        self.dx_estimated_date, self.dx_date_estimated = calculate_dx_date_if_estimated(
+            self.dx_date,
+            self.dx_ago,
+            self.report_datetime,
+        )
         super().save(*args, **kwargs)  # type: ignore
 
     def get_best_dx_date(self) -> date:
