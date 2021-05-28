@@ -5,7 +5,8 @@ from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from edc_constants.constants import YES
+from edc_constants.constants import NO, YES
+from edc_model import models as edc_models
 from edc_visit_schedule.constants import DAY1
 
 
@@ -62,3 +63,17 @@ def art_initiation_date(subject_identifier: str, report_datetime: datetime) -> d
                     art_date = review.arv_initiation_actual_date
                     break
     return art_date
+
+
+def calculate_dx_date_if_estimated(
+    dx_date,
+    dx_ago,
+    report_datetime,
+):
+    if dx_ago and not dx_date:
+        dx_estimated_date = edc_models.duration_to_date(dx_ago, report_datetime)
+        dx_date_estimated = YES
+    else:
+        dx_estimated_date = None
+        dx_date_estimated = NO
+    return dx_estimated_date, dx_date_estimated
