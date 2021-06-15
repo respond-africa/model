@@ -40,7 +40,6 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "django.contrib.staticfiles",
         "django.contrib.sites",
         "django_crypto_fields.apps.AppConfig",
-        "multisite",
         "edc_appointment.apps.AppConfig",
         "edc_action_item.apps.AppConfig",
         "edc_consent.apps.AppConfig",
