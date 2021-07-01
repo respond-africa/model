@@ -4,7 +4,8 @@ from django import forms
 from django.forms import ModelForm
 from edc_list_data.model_mixins import ListModelMixin
 
-from ..stubs import DrugSupplyNcdFormMixinStub as FormMixinStub
+from respond_models.stubs import DrugSupplyNcdFormMixinStub as FormMixinStub
+
 from ..utils import validate_total_days
 
 

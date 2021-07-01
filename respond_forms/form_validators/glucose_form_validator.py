@@ -1,10 +1,9 @@
-from django.core.exceptions import ImproperlyConfigured
 from edc_constants.constants import DM
 from edc_form_validators import FormValidator
+from edc_visit_schedule.utils import raise_if_baseline
 
 from ..form_validator_mixins import CrfFormValidatorMixin, GlucoseFormValidatorMixin
 from ..utils import (
-    raise_if_baseline,
     raise_if_clinical_review_does_not_exist,
     raise_if_initial_review_does_not_exist,
 )

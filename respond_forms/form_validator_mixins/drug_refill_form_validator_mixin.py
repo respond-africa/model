@@ -1,8 +1,9 @@
 from django import forms
 from edc_constants.constants import OTHER, YES
 from edc_form_validators import FormValidator
+from edc_visit_schedule.utils import is_baseline
 
-from ..utils import is_baseline, medications_exists_or_raise
+from ..utils import medications_exists_or_raise
 
 
 class DrugRefillFormValidatorMixin(FormValidator):

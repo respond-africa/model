@@ -1,35 +1,37 @@
 from django.db import models
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from edc_lab.choices import GLUCOSE_UNITS, RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 
 
-class FastingGlucoseModelMixin(models.Model):
+class IfgModelMixin(models.Model):
     # IFG
-    fasting_glucose = models.DecimalField(
-        verbose_name=mark_safe("Fasting glucose <u>level</u>"),
+    ifg_value = models.DecimalField(
+        verbose_name=format_html("IFG level"),
         max_digits=8,
         decimal_places=2,
         null=True,
         blank=True,
     )
 
-    fasting_glucose_quantifier = models.CharField(
+    ifg_quantifier = models.CharField(
+        verbose_name=format_html("IFG quantifier"),
         max_length=10,
         choices=RESULT_QUANTIFIER,
         default=EQ,
     )
 
-    fasting_glucose_units = models.CharField(
-        verbose_name="Units (fasting glucose)",
+    ifg_units = models.CharField(
+        verbose_name="IFG units",
         max_length=15,
         choices=GLUCOSE_UNITS,
         blank=True,
         null=True,
     )
 
-    fasting_glucose_datetime = models.DateTimeField(
-        verbose_name=mark_safe("<u>Time</u> fasting glucose <u>level</u> measured"),
+    ifg_datetime = models.DateTimeField(
+        verbose_name=mark_safe("<u>Time</u> IFG level measured"),
         null=True,
         blank=True,
     )

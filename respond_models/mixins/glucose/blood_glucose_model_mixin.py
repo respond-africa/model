@@ -1,16 +1,14 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import PROTECT
-from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.choices import FASTING_CHOICES, YES_NO, YES_NO_NA
 from edc_constants.constants import FASTING, NOT_APPLICABLE
 from edc_lab.choices import GLUCOSE_UNITS_NA, RESULT_QUANTIFIER_NA
 from edc_model.models import date_not_future, datetime_not_future
 from edc_reportable.choices import REPORTABLE
 
-from ...choices import FASTING_CHOICES
 
-
-class GlucoseModelMixin(models.Model):
+class BloodGlucoseModelMixin(models.Model):
 
     is_poc = models.CharField(
         verbose_name="Was a point-of-care test used?",

@@ -1,3 +1,4 @@
+import pdb
 from datetime import date
 from decimal import Decimal
 from typing import Optional, Type, Union
@@ -6,6 +7,7 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from edc_reportable import MILLIMOLES_PER_LITER, convert_units
+from edc_visit_schedule.utils import is_baseline
 from edc_visit_tracking.stubs import SubjectVisitModelStub
 
 from respond_models.utils import (
@@ -14,18 +16,7 @@ from respond_models.utils import (
     get_initial_review_model_cls,
     get_medication_model_cls,
     get_review_model_cls,
-    is_baseline,
 )
-
-
-def raise_if_baseline(subject_visit: SubjectVisitModelStub) -> None:
-    if subject_visit and is_baseline(subject_visit=subject_visit):
-        raise forms.ValidationError("This form is not available for completion at baseline.")
-
-
-def raise_if_not_baseline(subject_visit: SubjectVisitModelStub) -> None:
-    if subject_visit and not is_baseline(subject_visit=subject_visit):
-        raise forms.ValidationError("This form is only available for completion at baseline.")
 
 
 def model_exists_or_raise(
@@ -134,8 +125,10 @@ def validate_glucose_as_millimoles_per_liter(
     min_val: Union[Decimal, float] = None,
     max_val: Union[Decimal, float] = None,
 ) -> None:
-    min_val = min_val or 0.00
-    max_val = max_val or 27.80
+    min_val = min_val or Decimal("0.00")
+    max_val = max_val or Decimal("30.00")
+    high_value = Decimal("9999.99")
+
     for fld in ["fasting_glucose", "ogtt_two_hr"]:
         value = cleaned_data.get(fld)
         units = cleaned_data.get(f"{fld}_units")
@@ -143,7 +136,10 @@ def validate_glucose_as_millimoles_per_liter(
             converted_value = convert_units(
                 value, units_from=units, units_to=MILLIMOLES_PER_LITER
             )
-            if not (min_val <= converted_value <= max_val):
+            if (
+                not (min_val <= round(converted_value, 2) <= max_val)
+                and round(converted_value, 2) != high_value
+            ):
                 raise forms.ValidationError(
                     {fld: f"This value is out-of-range. " f"Got {converted_value} mmol/L"}
                 )

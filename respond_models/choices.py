@@ -1,4 +1,4 @@
-from edc_constants.constants import FASTING, NEVER, NON_FASTING, OTHER
+from edc_constants.constants import NEVER, OTHER
 
 from .constants import MORE_THAN_HALF, NEARLY_EVERYDAY, NOT_AT_ALL, SEVERAL_DAYS
 
@@ -15,9 +15,6 @@ DEATH_LOCATIONS = (
     ("hospital_clinic", "Hospital/clinic"),
     (OTHER, "Elsewhere, please specify"),
 )
-
-FASTING_CHOICES = ((FASTING, "Fasting"), (NON_FASTING, "Non-fasting"))
-
 
 INFORMANT = (
     ("spouse", "Spouse"),

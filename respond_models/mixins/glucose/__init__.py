@@ -1,4 +1,4 @@
-from .fasting_glucose_model_mixin import FastingGlucoseModelMixin
+from .blood_glucose_model_mixin import BloodGlucoseModelMixin
 from .fasting_model_mixin import FastingModelMixin
-from .glucose_model_mixin import GlucoseModelMixin
+from .ifg_model_mixin import IfgModelMixin
 from .ogtt_model_mixin import OgttModelMixin

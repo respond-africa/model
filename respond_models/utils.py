@@ -7,14 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from edc_constants.constants import NO, YES
 from edc_model import models as edc_models
-from edc_visit_schedule.constants import DAY1
-
-
-def is_baseline(subject_visit):
-    return (
-        subject_visit.appointment.visit_code == DAY1
-        and subject_visit.appointment.visit_code_sequence == 0
-    )
 
 
 def get_clinical_review_baseline_model_cls() -> Type[models.Model]:
