@@ -11,12 +11,6 @@ from .complications import ComplicationsBaselineModelMixin, ComplicationsFollowu
 from .creatinine_fields_model_mixin import CreatinineModelFieldsMixin
 from .drug_refill_model_mixin import DrugRefillModelMixin
 from .drug_supply_model_mixin import DrugSupplyModelMixin
-from .glucose import (
-    BloodGlucoseModelMixin,
-    FastingModelMixin,
-    IfgModelMixin,
-    OgttModelMixin,
-)
 from .initial_review import (
     HivArvInitiationModelMixin,
     HivArvMonitoringModelMixin,
