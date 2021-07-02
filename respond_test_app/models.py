@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.db import models
+from edc_blood_results.model_mixins import BloodResultsModelMixin, GlucoseModelMixin
 from edc_constants.choices import YES_NO
 from edc_constants.constants import MALE
 from edc_crf.model_mixins import (
@@ -8,6 +9,7 @@ from edc_crf.model_mixins import (
     CrfNoManagerModelMixin,
     CrfWithActionModelMixin,
 )
+from edc_glucose.model_mixins import FastingModelMixin, IfgModelMixin, OgttModelMixin
 from edc_identifier.managers import SubjectIdentifierManager
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 from edc_lab.model_mixins import PanelModelMixin
@@ -21,7 +23,6 @@ from edc_reference.model_mixins import (
     RequisitionReferenceModelMixin,
 )
 from edc_registration.model_mixins import UpdatesOrCreatesRegistrationModelMixin
-from edc_reportable.model_mixin import BloodResultsModelMixin
 from edc_sites.models import SiteModelMixin
 from edc_utils import get_utcnow
 from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OnScheduleModelMixin
@@ -37,13 +38,9 @@ from respond_models.mixins import (
     ClinicalReviewBaselineHtnModelMixin,
     ClinicalReviewBaselineModelMixin,
     ClinicalReviewModelMixin,
-    FastingGlucoseModelMixin,
-    FastingModelMixin,
-    GlucoseModelMixin,
     HivArvInitiationModelMixin,
     HivArvMonitoringModelMixin,
     InitialReviewModelMixin,
-    OgttModelMixin,
 )
 from respond_models.mixins.clinical_review.clinical_review import (
     ClinicalReviewCholModelMixin,
@@ -147,7 +144,7 @@ class SubjectRequisition(
 
     is_drawn = models.CharField(max_length=25, choices=YES_NO, null=True)
 
-    reason_not_drawn = models.CharField(max_length=25, null=True)
+    reason_not_dot_drawn = models.CharField(max_length=25, null=True)
 
     class Meta(edc_models.BaseUuidModel.Meta):
         pass
@@ -348,7 +345,7 @@ class GlucoseResult(
 
 class GlucoseAssessment(
     FastingModelMixin,
-    FastingGlucoseModelMixin,
+    IfgModelMixin,
     OgttModelMixin,
     TestCrfModelMixin,
     edc_models.BaseUuidModel,

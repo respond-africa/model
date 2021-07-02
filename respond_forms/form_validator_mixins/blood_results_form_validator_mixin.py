@@ -1,8 +1,7 @@
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 from edc_lab.form_validators import CrfRequisitionFormValidatorMixin
-from edc_reportable.constants import GRADE3, GRADE4
-from edc_reportable.form_validator_mixin import ReportablesFormValidatorMixin
+from edc_reportable import GRADE3, GRADE4, ReportablesFormValidatorMixin
 
 
 class BloodResultsFormValidatorMixin(

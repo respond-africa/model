@@ -73,7 +73,6 @@ def main():
             "respond_models.tests",
             "respond_forms.tests",
             "respond_admin.tests",
-            "respond_labs.tests",
         ]
     )
     sys.exit(failures)

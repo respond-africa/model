@@ -1,15 +1,44 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from edc_constants.constants import NO, NOT_APPLICABLE, YES
+from edc_constants.constants import DM, NO, NOT_APPLICABLE, YES
+from edc_form_validators import FormValidator
+from edc_glucose.form_validators import GlucoseFormValidatorMixin
 from edc_lab.constants import EQ
 from edc_reportable import MILLIMOLES_PER_LITER
 from edc_utils import get_utcnow
+from edc_visit_schedule.utils import raise_if_baseline
 from model_bakery import baker
 
 from respond_models.tests.respond_test_case_mixin import RespondModelTestCaseMixin
 
-from ..form_validators import GlucoseFormValidator
+from ..form_validator_mixins import CrfFormValidatorMixin
+from ..utils import (
+    raise_if_clinical_review_does_not_exist,
+    raise_if_initial_review_does_not_exist,
+)
+
+
+class GlucoseFormValidator(
+    GlucoseFormValidatorMixin,
+    CrfFormValidatorMixin,
+    FormValidator,
+):
+
+    required_at_baseline = True
+    require_diagnosis = False
+
+    def clean(self):
+
+        if self.cleaned_data.get("subject_visit"):
+            if not self.required_at_baseline:
+                raise_if_baseline(self.cleaned_data.get("subject_visit"))
+            raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+            if self.require_diagnosis:
+                raise_if_initial_review_does_not_exist(
+                    self.cleaned_data.get("subject_visit"), DM
+                )
+            self.validate_glucose_test()
 
 
 class TestGlucose(RespondModelTestCaseMixin, TestCase):
@@ -182,7 +211,7 @@ class TestGlucose(RespondModelTestCaseMixin, TestCase):
         cleaned_data = dict(
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
-            glucose_units=NOT_APPLICABLE,
+            glucose_units=MILLIMOLES_PER_LITER,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         with self.assertRaises(ValidationError) as cm:
@@ -193,32 +222,33 @@ class TestGlucose(RespondModelTestCaseMixin, TestCase):
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
             glucose_date=get_utcnow().date,
-            glucose_units=NOT_APPLICABLE,
+            glucose_units=MILLIMOLES_PER_LITER,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         with self.assertRaises(ValidationError) as cm:
             form_validator.validate()
-        self.assertIn("glucose_fasted", cm.exception.error_dict)
+        self.assertIn("fasting", cm.exception.error_dict)
 
         cleaned_data = dict(
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
             glucose_date=get_utcnow().date,
-            glucose_fasted=YES,
-            glucose_units=NOT_APPLICABLE,
+            fasting=YES,
+            glucose_units=MILLIMOLES_PER_LITER,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         with self.assertRaises(ValidationError) as cm:
             form_validator.validate()
-        self.assertIn("glucose", cm.exception.error_dict)
+        self.assertIn("glucose_value", cm.exception.error_dict)
 
         cleaned_data = dict(
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
             glucose_date=get_utcnow().date,
-            glucose_fasted=YES,
-            glucose=5.3,
-            glucose_units=NOT_APPLICABLE,
+            fasting=YES,
+            glucose_value=5.3,
+            glucose_units=MILLIMOLES_PER_LITER,
+            glucose_quantifier=None,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         with self.assertRaises(ValidationError) as cm:
@@ -229,10 +259,10 @@ class TestGlucose(RespondModelTestCaseMixin, TestCase):
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
             glucose_date=get_utcnow().date,
-            glucose_fasted=YES,
-            glucose=5.3,
-            glucose_quantifier=EQ,
+            fasting=YES,
+            glucose_value=5.3,
             glucose_units=NOT_APPLICABLE,
+            glucose_quantifier=EQ,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         with self.assertRaises(ValidationError) as cm:
@@ -243,9 +273,10 @@ class TestGlucose(RespondModelTestCaseMixin, TestCase):
             subject_visit=subject_visit_baseline,
             glucose_performed=YES,
             glucose_date=get_utcnow().date,
-            glucose_fasted=YES,
-            glucose=5.3,
-            glucose_quantifier=MILLIMOLES_PER_LITER,
+            fasting=YES,
+            glucose_value=5.3,
+            glucose_units=MILLIMOLES_PER_LITER,
+            glucose_quantifier=EQ,
         )
         form_validator = MyGlucoseFormValidator(cleaned_data=cleaned_data)
         try:

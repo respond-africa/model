@@ -5,7 +5,7 @@ from edc_lab.choices import SERUM_CREATININE_UNITS
 
 class CreatinineModelFieldsMixin(models.Model):
 
-    creatinine = models.DecimalField(
+    creatinine_value = models.DecimalField(
         verbose_name=mark_safe("Creatinine <u>level</u>"),
         max_digits=8,
         decimal_places=2,
