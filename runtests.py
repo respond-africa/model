@@ -23,6 +23,9 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     ETC_DIR=os.path.join(base_dir, "respond_test_app", "etc"),
     EDC_NAVBAR_DEFAULT="respond_model",
     EDC_BOOTSTRAP=3,
+    EDC_DIAGNOSIS_LABELS=dict(
+        hiv="HIV", dm="Diabetes", htn="Hypertension", chol="High Cholesterol"
+    ),
     SUBJECT_SCREENING_MODEL="respond_test_app.subjectscreening",
     SUBJECT_CONSENT_MODEL="respond_test_app.subjectconsent",
     SUBJECT_VISIT_MODEL="respond_test_app.subjectvisit",
