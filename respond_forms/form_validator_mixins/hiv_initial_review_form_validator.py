@@ -1,7 +1,7 @@
 from django import forms
 from edc_constants.constants import NO, OTHER, YES
 from edc_form_validators import FormValidator
-from edc_model.models import estimated_date_from_ago
+from edc_model.utils import estimated_date_from_ago
 
 from respond_models.constants import HIV_CLINIC
 

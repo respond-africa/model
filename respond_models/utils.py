@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from edc_constants.constants import NO, YES
-from edc_model import models as edc_models
+from edc_model.utils import duration_to_date
 
 
 def get_clinical_review_baseline_model_cls() -> Type[models.Model]:
@@ -63,7 +63,7 @@ def calculate_dx_date_if_estimated(
     report_datetime,
 ):
     if dx_ago and not dx_date:
-        dx_estimated_date = edc_models.duration_to_date(dx_ago, report_datetime)
+        dx_estimated_date = duration_to_date(dx_ago, report_datetime)
         dx_date_estimated = YES
     else:
         dx_estimated_date = None

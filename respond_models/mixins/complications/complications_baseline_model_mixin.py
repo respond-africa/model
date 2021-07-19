@@ -2,7 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NO
 from edc_model import models as edc_models
-from edc_model.models import estimated_date_from_ago
+from edc_model.utils import estimated_date_from_ago
 
 
 class ComplicationsBaselineModelMixin(models.Model):
