@@ -4,11 +4,9 @@ from django.db import models
 from edc_blood_results.model_mixins import BloodResultsModelMixin, GlucoseModelMixin
 from edc_constants.choices import YES_NO
 from edc_constants.constants import MALE
-from edc_crf.model_mixins import (
-    CrfModelMixin,
-    CrfNoManagerModelMixin,
-    CrfWithActionModelMixin,
-)
+from edc_crf.crf_model_mixin import CrfModelMixin
+from edc_crf.crf_no_manager_model_mixin import CrfNoManagerModelMixin
+from edc_crf.crf_with_action_model_mixin import CrfWithActionModelMixin
 from edc_glucose.model_mixins import FastingModelMixin, IfgModelMixin, OgttModelMixin
 from edc_identifier.managers import SubjectIdentifierManager
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
