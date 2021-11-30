@@ -4,8 +4,8 @@ from django.db import models
 from edc_blood_results.model_mixins import BloodResultsModelMixin, GlucoseModelMixin
 from edc_constants.choices import YES_NO
 from edc_constants.constants import MALE
-from edc_crf.model_mixins import (
-    CrfModelMixin,
+from edc_crf.crf_status_model_mixin import CrfStatusModelMixin
+from edc_crf.crf_with_action_model_mixin import (
     CrfNoManagerModelMixin,
     CrfWithActionModelMixin,
 )
@@ -29,6 +29,7 @@ from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OnScheduleMod
 from edc_visit_tracking.model_mixins import (
     SubjectVisitMissedModelMixin,
     VisitModelMixin,
+    VisitTrackingCrfModelMixin,
 )
 
 from respond_models.mixins import (
@@ -133,7 +134,8 @@ class SubjectVisit(
 
 
 class SubjectRequisition(
-    CrfModelMixin,
+    VisitTrackingCrfModelMixin,
+    CrfStatusModelMixin,
     RequisitionReferenceModelMixin,
     PanelModelMixin,
     UpdatesRequisitionMetadataModelMixin,
@@ -150,7 +152,7 @@ class SubjectRequisition(
         pass
 
 
-class CrfOne(CrfModelMixin, edc_models.BaseUuidModel):
+class CrfOne(VisitTrackingCrfModelMixin, CrfStatusModelMixin, edc_models.BaseUuidModel):
 
     f1 = models.CharField(max_length=50, null=True)
 
@@ -190,7 +192,11 @@ class SubjectVisitMissed(
         verbose_name_plural = "Missed Visit Report"
 
 
-class TestCrfModelMixin(CrfModelMixin):
+class TestCrfModelMixin(
+    VisitTrackingCrfModelMixin,
+    CrfStatusModelMixin,
+    ReferenceModelMixin,
+):
     class Meta:
         abstract = True
 
@@ -217,7 +223,8 @@ class ClinicalReview(
 ):
     class Meta(
         ClinicalReviewModelMixin.Meta,
-        CrfModelMixin.Meta,
+        VisitTrackingCrfModelMixin.Meta,
+        CrfStatusModelMixin.Meta,
         edc_models.BaseUuidModel.Meta,
     ):
         pass
@@ -234,7 +241,8 @@ class ClinicalReviewBaseline(
 ):
     class Meta(
         ClinicalReviewBaselineModelMixin.Meta,
-        CrfModelMixin.Meta,
+        VisitTrackingCrfModelMixin.Meta,
+        CrfStatusModelMixin.Meta,
         edc_models.BaseUuidModel.Meta,
     ):
         pass
@@ -318,7 +326,11 @@ class Medications(
     TestCrfModelMixin,
     edc_models.BaseUuidModel,
 ):
-    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
+    class Meta(
+        VisitTrackingCrfModelMixin.Meta,
+        CrfStatusModelMixin.Meta,
+        edc_models.BaseUuidModel.Meta,
+    ):
         verbose_name = "Medications"
         verbose_name_plural = "Medications"
 
@@ -371,7 +383,11 @@ class GlucoseAssessment(
         verbose_name="If NO, provide reason", max_length=150, null=True, blank=True
     )
 
-    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
+    class Meta(
+        VisitTrackingCrfModelMixin.Meta,
+        CrfStatusModelMixin.Meta,
+        edc_models.BaseUuidModel.Meta,
+    ):
         verbose_name = "Glucose (IFG, OGTT)"
         verbose_name_plural = "Glucose (IFG, OGTT)"
 
