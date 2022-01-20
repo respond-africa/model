@@ -6,4 +6,3 @@ from .blood_results_form_validator import (
     BloodResultsLipidFormValidator,
     BloodResultsRftFormValidator,
 )
-from .glucose_form_validator import GlucoseFormValidator

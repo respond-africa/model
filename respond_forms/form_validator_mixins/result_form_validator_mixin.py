@@ -2,10 +2,11 @@ from typing import Optional
 
 from django import forms
 from django.conf import settings
+
+# from respond_models.diagnoses import Diagnoses, InitialReviewRequired
+from edc_dx.diagnoses import Diagnoses, InitialReviewRequired
 from edc_form_validators import FormValidator
 from edc_utils import convert_php_dateformat
-
-from respond_models.diagnoses import Diagnoses, InitialReviewRequired
 
 
 class ResultFormValidatorMixin(FormValidator):
