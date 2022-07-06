@@ -1,5 +1,4 @@
 from django import forms
-from edc_blood_results import BloodResultsFormValidatorMixin
 from edc_constants.constants import FASTING
 from edc_lab_panel.panels import (
     blood_glucose_panel,
@@ -10,6 +9,7 @@ from edc_lab_panel.panels import (
     lipids_panel,
     rft_panel,
 )
+from edc_lab_results.form_validator_mixins import BloodResultsFormValidatorMixin
 
 
 class BloodResultsGluFormValidator(BloodResultsFormValidatorMixin):

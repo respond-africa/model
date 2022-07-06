@@ -3,7 +3,9 @@ from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA, YES_NO_PENDING_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_lab.choices import VL_QUANTIFIER_NA
-from edc_model import models as edc_models
+from edc_model.models import DurationYMDField
+from edc_model.utils import estimated_date_from_ago
+from edc_model.validators import date_not_future
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
 
 
@@ -15,7 +17,7 @@ class HivArvInitiationModelMixin(models.Model):
         default=YES,
     )
 
-    arv_initiation_ago = edc_models.DurationYMDField(
+    arv_initiation_ago = DurationYMDField(
         verbose_name="How long ago did the patient start ART?",
         null=True,
         blank=True,
@@ -23,7 +25,7 @@ class HivArvInitiationModelMixin(models.Model):
 
     arv_initiation_actual_date = models.DateField(
         verbose_name="Date started antiretroviral therapy (ART)",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
         help_text="Calculated based on response to `arv_initiation_ago`",
@@ -31,7 +33,7 @@ class HivArvInitiationModelMixin(models.Model):
 
     arv_initiation_estimated_date = models.DateField(
         verbose_name="Estimated Date started antiretroviral therapy (ART)",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         editable=False,
         help_text="Calculated based on response to `arv_initiation_ago`",
@@ -46,8 +48,8 @@ class HivArvInitiationModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.dx_estimated_date = edc_models.estimated_date_from_ago(self, "dx_ago")
-        self.arv_initiation_estimated_date = edc_models.estimated_date_from_ago(
+        self.dx_estimated_date = estimated_date_from_ago(self, "dx_ago")
+        self.arv_initiation_estimated_date = estimated_date_from_ago(
             self, "arv_initiation_ago"
         )
         super().save(*args, **kwargs)
@@ -86,7 +88,7 @@ class HivArvMonitoringModelMixin(models.Model):
 
     vl_date = models.DateField(
         verbose_name="Date of most recent viral load",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
     )
@@ -109,7 +111,7 @@ class HivArvMonitoringModelMixin(models.Model):
 
     cd4_date = models.DateField(
         verbose_name="Date of most recent CD4",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
     )

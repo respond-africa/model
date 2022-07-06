@@ -1,18 +1,20 @@
 from datetime import date
 
 from django.db import models
-from edc_blood_results.model_mixins import BloodResultsModelMixin, GlucoseModelMixin
 from edc_constants.choices import YES_NO
 from edc_constants.constants import MALE
-from edc_crf.model_mixins import (
-    CrfModelMixin,
-    CrfNoManagerModelMixin,
-    CrfWithActionModelMixin,
+from edc_crf.crf_model_mixin import CrfModelMixin
+from edc_crf.crf_no_manager_model_mixin import CrfNoManagerModelMixin
+from edc_crf.crf_with_action_model_mixin import CrfWithActionModelMixin
+from edc_glucose.model_mixins import (
+    FastingModelMixin,
+    OgttModelMixin,
+    fbg_model_mixin_factory,
 )
-from edc_glucose.model_mixins import FastingModelMixin, IfgModelMixin, OgttModelMixin
 from edc_identifier.managers import SubjectIdentifierManager
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 from edc_lab.model_mixins import PanelModelMixin
+from edc_lab_results.model_mixins import BloodResultsModelMixin, GlucoseModelMixin
 from edc_list_data.model_mixins import ListModelMixin
 from edc_metadata.model_mixins.creates import CreatesMetadataModelMixin
 from edc_metadata.model_mixins.updates import UpdatesRequisitionMetadataModelMixin
@@ -341,6 +343,13 @@ class GlucoseResult(
     class Meta(TestCrfNoManagerModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Glucose"
         verbose_name_plural = "Glucose"
+
+
+class IfgModelMixin(fbg_model_mixin_factory("ifg"), models.Model):
+    """A model mixin of fields for the FBG"""
+
+    class Meta:
+        abstract = True
 
 
 class GlucoseAssessment(

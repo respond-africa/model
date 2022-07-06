@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.deletion import PROTECT
 from edc_constants.choices import YES_NO
-from edc_model.models import datetime_not_future
+from edc_model.validators import datetime_not_future
 from edc_reportable.choices import REPORTABLE
 from edc_reportable.units import MILLIMOLES_PER_LITER
 

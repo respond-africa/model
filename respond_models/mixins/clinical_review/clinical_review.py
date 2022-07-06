@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_model import models as edc_models
+from edc_model.models import OtherCharField
 
 from ...constants import RESPOND_DIAGNOSIS_LABELS
 from ...stubs import ClinicalReviewModelStub
@@ -66,7 +66,7 @@ class ClinicalReviewHivModelMixin(models.Model):
         blank=True,
     )
 
-    hiv_reason_other = edc_models.OtherCharField()
+    hiv_reason_other = OtherCharField()
 
     hiv_dx = models.CharField(
         verbose_name=mark_safe(
@@ -109,7 +109,7 @@ class ClinicalReviewHtnModelMixin(models.Model):
         blank=True,
     )
 
-    htn_reason_other = edc_models.OtherCharField()
+    htn_reason_other = OtherCharField()
 
     htn_dx = models.CharField(
         verbose_name=mark_safe(
@@ -152,7 +152,7 @@ class ClinicalReviewDmModelMixin(models.Model):
         blank=True,
     )
 
-    dm_reason_other = edc_models.OtherCharField()
+    dm_reason_other = OtherCharField()
 
     dm_dx = models.CharField(
         verbose_name=mark_safe(
@@ -194,7 +194,7 @@ class ClinicalReviewCholModelMixin(models.Model):
         blank=True,
     )
 
-    chol_reason_other = edc_models.OtherCharField()
+    chol_reason_other = OtherCharField()
 
     chol_dx = models.CharField(
         verbose_name=mark_safe(

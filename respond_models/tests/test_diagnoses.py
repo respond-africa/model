@@ -1,4 +1,4 @@
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import CHOL, DM, HIV, HTN, NOT_APPLICABLE, POS, YES
 from edc_visit_tracking.constants import UNSCHEDULED

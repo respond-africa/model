@@ -1,7 +1,7 @@
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_metadata import NOT_REQUIRED, REQUIRED
 from edc_metadata.metadata_rules import CrfRule, CrfRuleGroup, P, register
-from respond_model.utils import is_baseline
+from edc_visit_schedule.utils import is_baseline
 
 
 def func_glucose_baseline_required(visit=None, **kwargs):

@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.html import format_html
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_model import models as edc_models
-from edc_model.models import date_not_future, estimated_date_from_ago
+from edc_model.models import DurationYMDField
+from edc_model.utils import estimated_date_from_ago
+from edc_model.validators import date_not_future
 from edc_visit_schedule.constants import DAY1
 
 from ...constants import CONDITION_ABBREVIATIONS
@@ -48,7 +49,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    hiv_test_ago = edc_models.DurationYMDField(
+    hiv_test_ago = DurationYMDField(
         verbose_name="How long ago was the patient's most recent HIV test?",
         null=True,
         blank=True,
@@ -64,7 +65,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
 
     hiv_test_date = models.DateField(
         verbose_name="Date of patient's most recent HIV test?",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
     )
@@ -95,7 +96,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    htn_test_ago = edc_models.DurationYMDField(
+    htn_test_ago = DurationYMDField(
         verbose_name="If Yes, how long ago was the patient tested for Hypertension?",
         null=True,
         blank=True,
@@ -109,7 +110,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
 
     htn_test_date = models.DateField(
         verbose_name="Date of patient's most recent Hypertension test?",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
     )
@@ -138,7 +139,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    dm_test_ago = edc_models.DurationYMDField(
+    dm_test_ago = DurationYMDField(
         verbose_name="If Yes, how long ago was the patient tested for Diabetes?",
         null=True,
         blank=True,
@@ -152,7 +153,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
 
     dm_test_date = models.DateField(
         verbose_name="Date of patient's most recent Diabetes test?",
-        validators=[edc_models.date_not_future],
+        validators=[date_not_future],
         null=True,
         blank=True,
     )
@@ -181,7 +182,7 @@ class ClinicalReviewBaselineCholModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    chol_test_ago = edc_models.DurationYMDField(
+    chol_test_ago = DurationYMDField(
         verbose_name="If Yes, how long ago was the patient tested for High Cholesterol?",
         null=True,
         blank=True,
